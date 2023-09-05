@@ -1,0 +1,1 @@
+enum FormSchema { form, messages }
