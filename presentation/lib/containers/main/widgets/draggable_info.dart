@@ -10,9 +10,10 @@ class DraggableInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      maxChildSize: 0.4,
-      minChildSize: 0.07,
-      initialChildSize: 0.4,
+      key: key,
+      maxChildSize: 0.8,
+      minChildSize: 0.1,
+      initialChildSize: 0.45,
       builder: (context, scrollController) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -37,7 +38,7 @@ class DraggableInfo extends StatelessWidget {
               const SizedBox(height: 15),
               TextWidget(
                 text: 'Información de ${polygonInfo.zona}',
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: color2,
                 height: 1.50,
@@ -49,13 +50,29 @@ class DraggableInfo extends StatelessWidget {
                   value: '${polygonInfo.contenidoDeHumedad}'),
               const SizedBox(height: 16),
               RowInfo(
-                  title: 'Tipo de suelo', value: '${polygonInfo.tipoDeSuelo}'),
+                hasBullet: true,
+                title: 'Tipo de suelo',
+                value: 'Clasificación SUCS\n${polygonInfo.tipoDeSueloSucs}',
+                secondValue:
+                    'Clasificación AASHTO\n${polygonInfo.tipoDeSueloAashto}',
+              ),
               const SizedBox(height: 16),
-              RowInfo(title: 'Densidad', value: '${polygonInfo.densidad}'),
+              RowInfo(
+                title: 'Peso específico natural',
+                value: '${polygonInfo.pesoEspecficoNatural}',
+              ),
               const SizedBox(height: 16),
               RowInfo(
                   title: 'Capacidad portante',
                   value: '${polygonInfo.capacidadPortante}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                  title: 'Límites',
+                  value: '${polygonInfo.limites?.join('\n')}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                  title: 'Cohesión y ángulo de fricción',
+                  value: '${polygonInfo.cohesinYAnguloDeFriccin?.join('\n')}'),
             ],
           ),
         );
@@ -67,30 +84,87 @@ class DraggableInfo extends StatelessWidget {
 class RowInfo extends StatelessWidget {
   final String title;
   final String value;
-  const RowInfo({super.key, required this.title, required this.value});
+  final String? secondValue;
+  final bool hasBullet;
+  const RowInfo(
+      {super.key,
+      required this.title,
+      required this.value,
+      this.secondValue,
+      this.hasBullet = false});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: TextWidget(
-            text: title,
-            fontSize: 16,
-            color: color1,
-            fontWeight: FontWeight.w400,
-            height: 1.50,
-            letterSpacing: 0.50,
+        TextWidget(
+          text: '•  $title',
+          fontSize: 16,
+          color: color1,
+          fontWeight: FontWeight.bold,
+          height: 1.50,
+          letterSpacing: 0.50,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15, top: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (hasBullet)
+                const TextWidget(
+                  text: '• ',
+                  fontSize: 14,
+                  color: color2,
+                  fontWeight: FontWeight.w400,
+                  height: 1.14,
+                  letterSpacing: 0.50,
+                ),
+              Expanded(
+                child: TextWidget(
+                  text: value,
+                  fontSize: 14,
+                  color: color2,
+                  fontWeight: FontWeight.w400,
+                  height: 1.14,
+                  letterSpacing: 0.50,
+                  maxLines: 10,
+                ),
+              ),
+            ],
           ),
         ),
-        TextWidget(
-          text: value,
-          fontSize: 16,
-          color: color2,
-          fontWeight: FontWeight.w500,
-          height: 1.14,
-          letterSpacing: 0.50,
-        )
+        if (secondValue != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (hasBullet)
+                  const TextWidget(
+                    text: '• ',
+                    fontSize: 14,
+                    color: color2,
+                    fontWeight: FontWeight.w400,
+                    height: 1.14,
+                    letterSpacing: 0.50,
+                  ),
+                Expanded(
+                  child: TextWidget(
+                    text: secondValue!,
+                    fontSize: 14,
+                    color: color2,
+                    fontWeight: FontWeight.w400,
+                    height: 1.14,
+                    letterSpacing: 0.50,
+                    maxLines: 10,
+                  ),
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }

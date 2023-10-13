@@ -167,7 +167,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   if (_polygonInfo != null)
-                    DraggableInfo(polygonInfo: _polygonInfo!)
+                    DraggableInfo(polygonInfo: _polygonInfo!, key: Key('${_polygonInfo?.zona}'),)
                 ],
               ),
             );
