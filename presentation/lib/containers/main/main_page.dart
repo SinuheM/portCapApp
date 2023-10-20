@@ -81,11 +81,11 @@ class _MainPageState extends State<MainPage> {
         setState(() {
           _polygonInfo = polygonInfo;
           selectedPolygon = Polygon(
-            color: orange.withOpacity(0.2),
+            color: grey.withOpacity(0.25),
             points: element.points,
-            borderColor: orange,
+            borderColor: Colors.blue,
             isFilled: true,
-            borderStrokeWidth: 1,
+            borderStrokeWidth: 3,
           );
         });
       }

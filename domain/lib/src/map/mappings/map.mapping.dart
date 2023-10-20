@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 class MapMapping {
   GeoJsonParser toPolygons(Map<String, dynamic> geojson) {
     GeoJsonParser myGeoJson = GeoJsonParser(
-        defaultMarkerColor: const Color(0XFF68aecb),
-        defaultPolygonBorderColor: Colors.blue,
-        defaultPolygonFillColor: const Color(0XFF68aecb).withOpacity(0.1));
+      defaultMarkerColor: const Color(0XFF68aecb),
+      defaultPolygonBorderColor: Colors.blue
+    );
     myGeoJson.parseGeoJson(geojson);
     return myGeoJson;
   }

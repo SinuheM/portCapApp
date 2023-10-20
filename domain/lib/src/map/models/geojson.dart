@@ -14,7 +14,9 @@ typedef PolygonCreationCallback = Polygon Function(
     List<List<LatLng>>? holePointsList,
     String label,
     TextStyle textStyle,
-    Map<String, dynamic> properties);
+    Map<String, dynamic> properties,
+    Color? color
+  );
 
 /// GeoJsonParser parses the GeoJson and fills three lists of parsed objects
 /// which are defined in flutter_map package
@@ -239,7 +241,9 @@ class GeoJsonParser {
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
-                f['properties'] as Map<String, dynamic>));
+                f['properties'] as Map<String, dynamic>,
+                Color(int.parse(f['properties']['fill'].replaceAll('#', '0xFF'))),
+              ));
           }
           break;
         case 'MultiPolygon':
@@ -274,7 +278,9 @@ class GeoJsonParser {
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
-                  f['properties'] as Map<String, dynamic>));
+                  f['properties'] as Map<String, dynamic>,
+                  Color(int.parse(f['properties']['fill'].replaceAll('#', '0xFF'))),
+              ));
             }
           }
           break;
@@ -320,12 +326,14 @@ class GeoJsonParser {
       List<List<LatLng>>? holesList,
       String label,
       TextStyle labelStyle,
-      Map<String, dynamic> properties) {
+      Map<String, dynamic> properties,
+      Color? color
+    ) {
     return Polygon(
       points: outerRing,
       holePointsList: holesList,
       borderColor: defaultPolygonBorderColor!,
-      color: defaultPolygonFillColor!,
+      color: color ?? defaultPolygonFillColor!,
       isFilled: defaultPolygonIsFilled!,
       borderStrokeWidth: defaultPolygonBorderStroke!,
       label: label,
