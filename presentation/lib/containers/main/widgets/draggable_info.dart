@@ -97,6 +97,7 @@ class DraggableInfo extends StatelessWidget {
               RowInfo(
                 title: 'Capacidad portante',
                 value: '${polygonInfo.capacidadPortante}'),
+              const SizedBox(height: 16),
               RowInfo(
                 title: 'Cimentación superficial propuesta',
                 value: '${polygonInfo.cimentacionSuperficialPropuesta?.join('\n')}'),
