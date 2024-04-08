@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
       if (isGeoPointInPolygon) {
         mapController.move(geodesy.findPolygonCentroid(element.points), 18);
         final polygonInfo =
-            polygonInformation.firstWhereOrNull((e) => e.zona == element.label);
+            polygonInformation.firstWhereOrNull((e) => e.id == element.label);
         setState(() {
           _polygonInfo = polygonInfo;
           selectedPolygon = Polygon(
@@ -167,7 +167,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   if (_polygonInfo != null)
-                    DraggableInfo(polygonInfo: _polygonInfo!, key: Key('${_polygonInfo?.zona}'),)
+                    DraggableInfo(polygonInfo: _polygonInfo!, key: Key('${_polygonInfo?.id}'),)
                 ],
               ),
             );

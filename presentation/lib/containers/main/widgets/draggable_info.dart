@@ -37,7 +37,7 @@ class DraggableInfo extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               TextWidget(
-                text: 'Información de ${polygonInfo.zona}',
+                text: 'Información del ${polygonInfo.id}',
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: color2,
@@ -46,8 +46,16 @@ class DraggableInfo extends StatelessWidget {
               ),
               const SizedBox(height: 18.0),
               RowInfo(
+                  title: 'Zonificación',
+                  value: '${polygonInfo.zona}'),
+              const SizedBox(height: 18.0),
+              RowInfo(
                   title: 'Contenido de humedad',
                   value: '${polygonInfo.contenidoDeHumedad}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                  title: 'Límites',
+                  value: '${polygonInfo.limites?.join('\n')}'),
               const SizedBox(height: 16),
               RowInfo(
                 hasBullet: true,
@@ -63,16 +71,26 @@ class DraggableInfo extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               RowInfo(
-                  title: 'Capacidad portante',
-                  value: '${polygonInfo.capacidadPortante}'),
-              const SizedBox(height: 16),
-              RowInfo(
-                  title: 'Límites',
-                  value: '${polygonInfo.limites?.join('\n')}'),
-              const SizedBox(height: 16),
-              RowInfo(
                   title: 'Cohesión y ángulo de fricción',
                   value: '${polygonInfo.cohesinYAnguloDeFriccin?.join('\n')}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                title: 'Capacidad portante',
+                value: '${polygonInfo.capacidadPortante}'),
+              RowInfo(
+                title: 'Cimentación superficial propuesta',
+                value: '${polygonInfo.cimentacionSuperficialPropuesta?.join('\n')}'),
+              const SizedBox(height: 20),
+              Container(
+                height: 450, // ajusta el alto según tus necesidades
+                width: double.infinity, // ancho completo
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/dibujo_app-removebg-preview.png'), // ruta de la imagen
+                    fit: BoxFit.cover, // ajustar la imagen al contenedor
+                  ),
+                ),
+              ),
             ],
           ),
         );
