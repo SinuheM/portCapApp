@@ -9,6 +9,7 @@ class DraggableInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Offset imageOffset = const Offset(110.0, 15.0);
     return DraggableScrollableSheet(
       key: key,
       maxChildSize: 0.8,
@@ -48,6 +49,25 @@ class DraggableInfo extends StatelessWidget {
               RowInfo(
                   title: 'Zonificación',
                   value: '${polygonInfo.zona}'),
+              const SizedBox(height: 1),
+              Container(
+                height: 1,
+                width: 1,
+                child: Transform.translate(
+                  offset: imageOffset,
+                  child: Transform.scale(
+                    scale: 150,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/dibujo_app-removebg-preview.png'), // ruta de la imagen
+                          fit: BoxFit.contain, // ajustar la imagen al contenedor
+                        ),
+                      ),
+                    )
+                  )
+                ),
+              ),
               const SizedBox(height: 18.0),
               RowInfo(
                   title: 'Contenido de humedad',
@@ -81,16 +101,6 @@ class DraggableInfo extends StatelessWidget {
                 title: 'Cimentación superficial propuesta',
                 value: '${polygonInfo.cimentacionSuperficialPropuesta?.join('\n')}'),
               const SizedBox(height: 20),
-              Container(
-                height: 450, // ajusta el alto según tus necesidades
-                width: double.infinity, // ancho completo
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/dibujo_app-removebg-preview.png'), // ruta de la imagen
-                    fit: BoxFit.cover, // ajustar la imagen al contenedor
-                  ),
-                ),
-              ),
             ],
           ),
         );
