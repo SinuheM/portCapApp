@@ -1,7 +1,7 @@
 part of 'map_bloc.dart';
 
 class MapState extends Equatable {
-  final List<Polygon> polygons;
+  final List<MyPolygon> polygons;
   final List<PolygonInfo> polygonsInformation;
   final bool hasError;
   final bool isInfoLoading;
@@ -38,7 +38,7 @@ class MapState extends Equatable {
             dateLastUpdate: null);
 
   MapState copyWith(
-      {List<Polygon>? polygons,
+      {List<MyPolygon>? polygons,
       List<PolygonInfo>? polygonsInformation,
       bool? hasError,
       bool? isInfoRefreshed,

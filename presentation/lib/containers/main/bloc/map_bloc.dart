@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:domain/domain.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_map/flutter_map.dart';
+// ignore: implementation_imports
+import 'package:domain/src/map/models/my_polygon.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';

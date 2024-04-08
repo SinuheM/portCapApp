@@ -13,6 +13,6 @@ class MapProvider {
   }
 
   Future<Response> getInformation(bool forceRefresh) async {
-    return _apiProvider.get('/cap_data.json',forceRefresh: forceRefresh);
+    return _apiProvider.get('/cap_data_test.json',forceRefresh: forceRefresh);
   }
 }

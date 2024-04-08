@@ -4,18 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 // ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
+import 'package:domain/src/map/models/my_polygon.dart';
 
 typedef MarkerCreationCallback = Marker Function(
     LatLng point, Map<String, dynamic> properties);
 typedef PolylineCreationCallback = Polyline Function(
     List<LatLng> points, Map<String, dynamic> properties);
-typedef PolygonCreationCallback = Polygon Function(
+typedef PolygonCreationCallback = MyPolygon Function(
     List<LatLng> points,
     List<List<LatLng>>? holePointsList,
     String label,
     TextStyle textStyle,
     Map<String, dynamic> properties,
-    Color? color
+    Color? color,
+    String key
   );
 
 /// GeoJsonParser parses the GeoJson and fills three lists of parsed objects
@@ -43,7 +45,7 @@ class GeoJsonParser {
   final List<Polyline> polylines = [];
 
   /// list of [Polygon] objects created as result of parsing
-  final List<Polygon> polygons = [];
+  final List<MyPolygon> polygons = [];
 
   /// user defined callback function that creates a [Marker] object
   MarkerCreationCallback? markerCreationCallback;
@@ -236,13 +238,14 @@ class GeoJsonParser {
             polygons.add(polygonCreationCallback!(
                 outerRing,
                 holesList,
-                f['properties']['name'],
+                f['properties']['label-name'],
                 const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
                 f['properties'] as Map<String, dynamic>,
                 Color(int.parse(f['properties']['fill'].replaceAll('#', '0xFF'))),
+                f['properties']['name']
               ));
           }
           break;
@@ -273,13 +276,14 @@ class GeoJsonParser {
               polygons.add(polygonCreationCallback!(
                   outerRing,
                   holesList,
-                  f['properties']['name'],
+                  f['properties']['label-name'],
                   const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                   f['properties'] as Map<String, dynamic>,
                   Color(int.parse(f['properties']['fill'].replaceAll('#', '0xFF'))),
+                  f['properties']['name']
               ));
             }
           }
@@ -321,15 +325,16 @@ class GeoJsonParser {
   }
 
   /// default callback function for creating [Polygon]
-  Polygon createDefaultPolygon(
+  MyPolygon createDefaultPolygon(
       List<LatLng> outerRing,
       List<List<LatLng>>? holesList,
       String label,
       TextStyle labelStyle,
       Map<String, dynamic> properties,
-      Color? color
+      Color? color,
+      String key
     ) {
-    return Polygon(
+    return MyPolygon(
       points: outerRing,
       holePointsList: holesList,
       borderColor: defaultPolygonBorderColor!,
@@ -338,6 +343,7 @@ class GeoJsonParser {
       borderStrokeWidth: defaultPolygonBorderStroke!,
       label: label,
       labelStyle: labelStyle,
+      key: key
     );
   }
 
