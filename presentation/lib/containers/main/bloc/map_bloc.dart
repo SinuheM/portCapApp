@@ -50,13 +50,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     await emit.forEach<Config>(
         _mapRepository.getConfig(forceRefresh: event.forceRefresh),
         onData: (config) {
-      return state.copyWith(config: config);
+      return state.copyWith(
+          config: config,
+          dataState:
+              event.forceRefresh ? DataState.refreshed : DataState.loaded);
     }, onError: <Exception>(exception, __) {
       return state.copyWith(dataState: DataState.error, exception: exception);
     });
-    emit(state.copyWith(
-        dataState:
-            event.forceRefresh ? DataState.refreshed : DataState.loaded));
   }
 
   void _onGetPolygons(GetPolygonsEvent event, Emitter<MapState> emit) async {
