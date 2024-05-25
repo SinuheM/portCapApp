@@ -12,6 +12,8 @@ import 'package:presentation/containers/main/widgets/config_modal.dart';
 import 'package:presentation/containers/main/widgets/draggable_info.dart';
 import 'package:presentation/containers/main/widgets/floating_button.dart';
 import 'package:presentation/styles/theme.dart';
+// ignore: implementation_imports
+import 'package:domain/src/map/models/my_polygon.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -30,7 +32,7 @@ class _MainPageState extends State<MainPage> {
   MapController mapController = MapController();
   Geodesy geodesy = Geodesy();
   PolygonInfo? _polygonInfo;
-  Polygon? selectedPolygon;
+  MyPolygon? selectedPolygon;
 
   @override
   void initState() {
@@ -69,23 +71,23 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  searchPointInPolygons(List<Polygon> polygons,
-      List<PolygonInfo> polygonInformation, LatLng point) {
+  searchPointInPolygons(List<MyPolygon> polygons, List<PolygonInfo> polygonInformation, LatLng point) {
     for (var element in polygons) {
       bool isGeoPointInPolygon =
           geodesy.isGeoPointInPolygon(point, element.points);
       if (isGeoPointInPolygon) {
         mapController.move(geodesy.findPolygonCentroid(element.points), 18);
         final polygonInfo =
-            polygonInformation.firstWhereOrNull((e) => e.zona == element.label);
+            polygonInformation.firstWhereOrNull((e) => e.id == element.key);
         setState(() {
           _polygonInfo = polygonInfo;
-          selectedPolygon = Polygon(
-            color: orange.withOpacity(0.2),
+          selectedPolygon = MyPolygon(
+            color: grey.withOpacity(0.25),
             points: element.points,
-            borderColor: orange,
+            borderColor: Colors.blue,
             isFilled: true,
-            borderStrokeWidth: 1,
+            borderStrokeWidth: 3,
+            key: element.key
           );
         });
       }
@@ -167,7 +169,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   if (_polygonInfo != null)
-                    DraggableInfo(polygonInfo: _polygonInfo!, key: Key('${_polygonInfo?.zona}'),)
+                    DraggableInfo(polygonInfo: _polygonInfo!, key: Key('${_polygonInfo?.id}'),)
                 ],
               ),
             );

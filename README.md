@@ -26,6 +26,14 @@ Go to project root and execute the following command in console to get the requi
 flutter pub get 
 ```
 
+**Step 2.5:**
+
+If you are in VsCode, then go to the command pallete and open the Emulator: 
+
+```
+flutter run 
+```
+
 **Step 3:**
 
 Then execute the following command in console to run the app: 
@@ -33,6 +41,8 @@ Then execute the following command in console to run the app:
 ```
 flutter run 
 ```
+
+If a reload is required press the letter “r” on your keyboard while the app is running in the Terminal.
 
 **Step 4:**
 

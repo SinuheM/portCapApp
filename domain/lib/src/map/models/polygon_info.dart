@@ -18,6 +18,8 @@ class PolygonInfo {
   String? tipoDeSueloAashto;
   String? tipoDeSueloSucs;
   String? zona;
+  String? id;
+  List<String>? cimentacionSuperficialPropuesta;
 
   PolygonInfo({
     this.capacidadPortante,
@@ -28,6 +30,8 @@ class PolygonInfo {
     this.tipoDeSueloAashto,
     this.tipoDeSueloSucs,
     this.zona,
+    this.id,
+    this.cimentacionSuperficialPropuesta
   });
 
   PolygonInfo copyWith({
@@ -39,6 +43,8 @@ class PolygonInfo {
     String? tipoDeSueloAashto,
     String? tipoDeSueloSucs,
     String? zona,
+    String? id,
+    List<String>? cimentacionSuperficialPropuesta
   }) =>
       PolygonInfo(
         capacidadPortante: capacidadPortante ?? this.capacidadPortante,
@@ -50,6 +56,8 @@ class PolygonInfo {
         tipoDeSueloAashto: tipoDeSueloAashto ?? this.tipoDeSueloAashto,
         tipoDeSueloSucs: tipoDeSueloSucs ?? this.tipoDeSueloSucs,
         zona: zona ?? this.zona,
+        id: id ?? this.id,
+        cimentacionSuperficialPropuesta: cimentacionSuperficialPropuesta ?? this.cimentacionSuperficialPropuesta
       );
 
   factory PolygonInfo.fromJson(Map<String, dynamic> json) => PolygonInfo(
@@ -66,6 +74,10 @@ class PolygonInfo {
         tipoDeSueloAashto: json["Tipo de suelo Aashto"],
         tipoDeSueloSucs: json["Tipo de suelo Sucs"],
         zona: json["Zona"],
+        id: json["ID"],
+        cimentacionSuperficialPropuesta: json["Cimentación superficial propuesta"] == null
+            ? []
+            : List<String>.from(json["Cimentación superficial propuesta"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,5 +92,8 @@ class PolygonInfo {
         "Tipo de suelo Aashto": tipoDeSueloAashto,
         "Tipo de suelo Sucs": tipoDeSueloSucs,
         "Zona": zona,
+        "ID": id,
+        "Cimentación superficial propuesta": 
+          cimentacionSuperficialPropuesta == null ? [] : List<dynamic>.from(cimentacionSuperficialPropuesta!.map((x) => x)),
       };
 }

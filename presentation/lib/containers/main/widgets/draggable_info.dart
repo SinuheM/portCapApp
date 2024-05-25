@@ -9,6 +9,7 @@ class DraggableInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Offset imageOffset = const Offset(110.0, 15.0);
     return DraggableScrollableSheet(
       key: key,
       maxChildSize: 0.8,
@@ -37,7 +38,7 @@ class DraggableInfo extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               TextWidget(
-                text: 'Información de ${polygonInfo.zona}',
+                text: 'Información del ${polygonInfo.id}',
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: color2,
@@ -46,8 +47,35 @@ class DraggableInfo extends StatelessWidget {
               ),
               const SizedBox(height: 18.0),
               RowInfo(
+                  title: 'Zonificación',
+                  value: '${polygonInfo.zona}'),
+              const SizedBox(height: 1),
+              SizedBox(
+                height: 1,
+                width: 1,
+                child: Transform.translate(
+                  offset: imageOffset,
+                  child: Transform.scale(
+                    scale: 150,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/dibujo_app-removebg-preview.png'), // ruta de la imagen
+                          fit: BoxFit.contain, // ajustar la imagen al contenedor
+                        ),
+                      ),
+                    )
+                  )
+                ),
+              ),
+              const SizedBox(height: 18.0),
+              RowInfo(
                   title: 'Contenido de humedad',
                   value: '${polygonInfo.contenidoDeHumedad}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                  title: 'Límites',
+                  value: '${polygonInfo.limites?.join('\n')}'),
               const SizedBox(height: 16),
               RowInfo(
                 hasBullet: true,
@@ -63,16 +91,17 @@ class DraggableInfo extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               RowInfo(
-                  title: 'Capacidad portante',
-                  value: '${polygonInfo.capacidadPortante}'),
-              const SizedBox(height: 16),
-              RowInfo(
-                  title: 'Límites',
-                  value: '${polygonInfo.limites?.join('\n')}'),
-              const SizedBox(height: 16),
-              RowInfo(
                   title: 'Cohesión y ángulo de fricción',
                   value: '${polygonInfo.cohesinYAnguloDeFriccin?.join('\n')}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                title: 'Capacidad portante',
+                value: '${polygonInfo.capacidadPortante}'),
+              const SizedBox(height: 16),
+              RowInfo(
+                title: 'Cimentación superficial propuesta',
+                value: '${polygonInfo.cimentacionSuperficialPropuesta?.join('\n')}'),
+              const SizedBox(height: 20),
               const SizedBox(height: 20),
             ],
           ),
