@@ -57,7 +57,7 @@ class ApiProvider {
         queryParameters: queryParameters,
         options: forceRefresh
             ? options
-            : buildCacheOptions(const Duration(days: 1), options: options));
+            : buildCacheOptions(const Duration(days: 7), options: options));
   }
 
   Future<Response> post(String url,

@@ -73,6 +73,7 @@ class DraggableInfo extends StatelessWidget {
               RowInfo(
                   title: 'Cohesión y ángulo de fricción',
                   value: '${polygonInfo.cohesinYAnguloDeFriccin?.join('\n')}'),
+              const SizedBox(height: 20),
             ],
           ),
         );
