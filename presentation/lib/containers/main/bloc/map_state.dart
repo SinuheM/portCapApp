@@ -1,58 +1,58 @@
 part of 'map_bloc.dart';
 
+enum DataState { initial, loading, loaded, refreshed, error }
+
 class MapState extends Equatable {
   final List<MyPolygon> polygons;
   final List<PolygonInfo> polygonsInformation;
-  final bool hasError;
-  final bool isInfoLoading;
-
-  final bool isInfoRefreshed;
+  final DataState dataState;
   final Exception? exception;
   final DateTime? dateLastUpdate;
+  final DateTime? configLastUpdateDate;
+  final Config? config;
 
-  const MapState({
-    this.polygons = const [],
-    this.polygonsInformation = const [],
-    this.hasError = false,
-    this.isInfoRefreshed = false,
-    this.isInfoLoading = false,
-    this.exception,
-    this.dateLastUpdate,
-  });
+  const MapState(
+      {this.polygons = const [],
+      this.polygonsInformation = const [],
+      this.dataState = DataState.initial,
+      this.exception,
+      this.dateLastUpdate,
+      this.configLastUpdateDate,
+      this.config});
   const MapState._(
       {this.polygons = const [],
       this.polygonsInformation = const [],
-      this.hasError = false,
-      this.isInfoRefreshed = false,
-      this.isInfoLoading = false,
+      this.dataState = DataState.initial,
       this.dateLastUpdate,
-      this.exception});
+      this.exception,
+      this.configLastUpdateDate,
+      this.config});
   const MapState.initial()
       : this._(
             polygons: const [],
             polygonsInformation: const [],
-            hasError: false,
-            isInfoLoading: false,
-            isInfoRefreshed: false,
+            dataState: DataState.initial,
             exception: null,
-            dateLastUpdate: null);
+            dateLastUpdate: null,
+            configLastUpdateDate: null,
+            config: null);
 
   MapState copyWith(
       {List<MyPolygon>? polygons,
       List<PolygonInfo>? polygonsInformation,
-      bool? hasError,
-      bool? isInfoRefreshed,
-      bool? isInfoLoading,
+      DataState? dataState,
       Exception? exception,
-      DateTime? dateLastUpdate}) {
+      DateTime? dateLastUpdate,
+      DateTime? configLastUpdateDate,
+      Config? config}) {
     return MapState(
       polygons: polygons ?? this.polygons,
       polygonsInformation: polygonsInformation ?? this.polygonsInformation,
-      hasError: hasError ?? this.hasError,
       exception: exception ?? this.exception,
-      isInfoRefreshed: isInfoRefreshed ?? this.isInfoRefreshed,
       dateLastUpdate: dateLastUpdate ?? this.dateLastUpdate,
-      isInfoLoading: isInfoLoading ?? this.isInfoLoading,
+      configLastUpdateDate: configLastUpdateDate ?? this.configLastUpdateDate,
+      config: config ?? this.config,
+      dataState: dataState ?? this.dataState,
     );
   }
 
@@ -60,9 +60,10 @@ class MapState extends Equatable {
   List<Object?> get props => [
         polygons,
         polygonsInformation,
-        hasError,
-        isInfoRefreshed,
-        dateLastUpdate
+        dataState,
+        dateLastUpdate,
+        configLastUpdateDate,
+        config
       ];
 }
 

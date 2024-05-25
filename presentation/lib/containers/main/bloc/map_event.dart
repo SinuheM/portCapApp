@@ -18,3 +18,8 @@ class GetPolygonsInformationEvent extends MapEvent {
   final bool forceRefresh;
   const GetPolygonsInformationEvent({this.forceRefresh = false});
 }
+
+class GetConfigEvent extends MapEvent {
+  final bool forceRefresh;
+  const GetConfigEvent({this.forceRefresh = false});
+}

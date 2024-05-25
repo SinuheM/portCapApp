@@ -1,7 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:presentation/helpers/input_formatters/uppercase.dart';
 import 'package:presentation/styles/theme.dart';
-import 'package:presentation/widgets/text.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -16,7 +17,7 @@ class CustomTextField extends StatelessWidget {
   final Map<String, String Function(Object)>? messages;
   final bool obscureText;
   final bool readOnly;
-  final String hintText;
+  final String? hintText;
   final bool expands;
   final Function? onChanged;
 
@@ -29,7 +30,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.readOnly = false,
     this.expands = false,
-    required this.hintText,
+    this.hintText,
     required this.controller,
     this.prefixIcon,
     this.suffixIcon,
@@ -39,57 +40,43 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextWidget(
-          text: hintText,
-          fontWeight: FontWeight.w400,
-          color: grey,
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          height: 70,
-          child: ReactiveTextField(
-            maxLength: maxLength,
-            readOnly: readOnly,
-            formControlName: controller,
-            obscureText: obscureText,
-            keyboardType: textInputType,
-            maxLines: 1,
-            expands: expands,
-            textInputAction: TextInputAction.next,
-            inputFormatters: [
-              if (textInputType == TextInputType.text) UpperCaseTextFormatter(),
-            ],
-            onChanged: (control) {
-              if (onChanged != null) {
-                onChanged!(control.value);
-              }
-            },
-            decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              errorStyle: const TextStyle(
-                color: red,
-              ),
-              counterText: ' ',
-              labelText: null,
-              labelStyle: const TextStyle(color: black),
-              prefixIcon: prefixIcon,
-              suffixIcon: suffixIcon,
-              alignLabelWithHint: false,
-              hintText: null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: grey),
-              ),
-            ),
-            validationMessages: messages,
+    return Container(
+      color: Random().nextBool() ? Colors.red : Colors.blue,
+      height: 40,
+      child: ReactiveTextField(
+        maxLength: maxLength,
+        readOnly: readOnly,
+        formControlName: controller,
+        obscureText: obscureText,
+        keyboardType: textInputType,
+        maxLines: 1,
+        expands: expands,
+        textInputAction: TextInputAction.next,
+        inputFormatters: [
+          if (textInputType == TextInputType.text) UpperCaseTextFormatter(),
+        ],
+        onChanged: (control) {
+          if (onChanged != null) {
+            onChanged!(control.value);
+          }
+        },
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          counterText: ' ',
+          labelStyle: const TextStyle(color: black),
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: const BorderSide(color: Color(0xff1E1E1E)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6),
+            borderSide: const BorderSide(color: Color(0xff1E1E1E)),
           ),
         ),
-      ],
+        validationMessages: messages,
+      ),
     );
   }
 }

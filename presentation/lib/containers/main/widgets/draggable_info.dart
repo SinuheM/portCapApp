@@ -1,17 +1,38 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:presentation/containers/main/widgets/calculator.dart';
+import 'package:presentation/containers/main/widgets/info.dart';
+import 'package:presentation/containers/main/widgets/result.dart';
 import 'package:presentation/styles/theme.dart';
 import 'package:presentation/widgets/text.dart';
 
-class DraggableInfo extends StatelessWidget {
+class DraggableInfo extends StatefulWidget {
   final PolygonInfo polygonInfo;
-  const DraggableInfo({super.key, required this.polygonInfo});
+  final Function()? onClose;
+  const DraggableInfo({
+    super.key,
+    required this.polygonInfo,
+    required this.onClose,
+  });
+
+  @override
+  State<DraggableInfo> createState() => _DraggableInfoState();
+}
+
+class _DraggableInfoState extends State<DraggableInfo> {
+  int currentStep = 0;
+  Map<String, dynamic> _result = {};
+
+  calculateCimentation() {
+    setState(() {
+      currentStep = 1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    Offset imageOffset = const Offset(110.0, 15.0);
     return DraggableScrollableSheet(
-      key: key,
+      key: widget.key,
       maxChildSize: 0.8,
       minChildSize: 0.1,
       initialChildSize: 0.45,
@@ -29,80 +50,52 @@ class DraggableInfo extends StatelessWidget {
             controller: scrollController,
             padding: EdgeInsets.zero,
             children: [
-              const Center(
-                child: Icon(
-                  Icons.horizontal_rule,
-                  color: grey,
-                  size: 30,
-                ),
+              Stack(
+                children: [
+                  const Center(
+                    child: Icon(
+                      Icons.horizontal_rule,
+                      color: grey,
+                      size: 30,
+                    ),
+                  ),
+                  Positioned(
+                      right: 0,
+                      child: IconButton(
+                          onPressed: widget.onClose,
+                          icon: const Icon(Icons.close)))
+                ],
               ),
               const SizedBox(height: 15),
-              TextWidget(
-                text: 'Información del ${polygonInfo.id}',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: color2,
-                height: 1.50,
-                letterSpacing: 0.50,
-              ),
-              const SizedBox(height: 18.0),
-              RowInfo(
-                  title: 'Zonificación',
-                  value: '${polygonInfo.zona}'),
-              const SizedBox(height: 1),
-              SizedBox(
-                height: 1,
-                width: 1,
-                child: Transform.translate(
-                  offset: imageOffset,
-                  child: Transform.scale(
-                    scale: 150,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/dibujo_app-removebg-preview.png'), // ruta de la imagen
-                          fit: BoxFit.contain, // ajustar la imagen al contenedor
-                        ),
-                      ),
-                    )
-                  )
+              if (currentStep == 0)
+                InfoCard(
+                  polygonInfo: widget.polygonInfo,
+                  onCalculate: () {
+                    setState(() {
+                      currentStep = 1;
+                    });
+                  },
                 ),
-              ),
-              const SizedBox(height: 18.0),
-              RowInfo(
-                  title: 'Contenido de humedad',
-                  value: '${polygonInfo.contenidoDeHumedad}'),
-              const SizedBox(height: 16),
-              RowInfo(
-                  title: 'Límites',
-                  value: '${polygonInfo.limites?.join('\n')}'),
-              const SizedBox(height: 16),
-              RowInfo(
-                hasBullet: true,
-                title: 'Tipo de suelo',
-                value: 'Clasificación SUCS\n${polygonInfo.tipoDeSueloSucs}',
-                secondValue:
-                    'Clasificación AASHTO\n${polygonInfo.tipoDeSueloAashto}',
-              ),
-              const SizedBox(height: 16),
-              RowInfo(
-                title: 'Peso específico natural',
-                value: '${polygonInfo.pesoEspecficoNatural}',
-              ),
-              const SizedBox(height: 16),
-              RowInfo(
-                  title: 'Cohesión y ángulo de fricción',
-                  value: '${polygonInfo.cohesinYAnguloDeFriccin?.join('\n')}'),
-              const SizedBox(height: 16),
-              RowInfo(
-                title: 'Capacidad portante',
-                value: '${polygonInfo.capacidadPortante}'),
-              const SizedBox(height: 16),
-              RowInfo(
-                title: 'Cimentación superficial propuesta',
-                value: '${polygonInfo.cimentacionSuperficialPropuesta?.join('\n')}'),
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
+              if (currentStep == 1)
+                CalculatorCard(
+                  currentValues: _result,
+                  polygonInfo: widget.polygonInfo,
+                  onCalculate: (result) {
+                    setState(() {
+                      currentStep = 2;
+                      _result = result;
+                    });
+                  },
+                ),
+              if (currentStep == 2)
+                ResultCard(
+                  result: _result,
+                  onReturn: () {
+                    setState(() {
+                      currentStep = 1;
+                    });
+                  },
+                ),
             ],
           ),
         );
@@ -113,13 +106,13 @@ class DraggableInfo extends StatelessWidget {
 
 class RowInfo extends StatelessWidget {
   final String title;
-  final String value;
+  final String? value;
   final String? secondValue;
   final bool hasBullet;
   const RowInfo(
       {super.key,
       required this.title,
-      required this.value,
+      this.value,
       this.secondValue,
       this.hasBullet = false});
 
@@ -151,17 +144,18 @@ class RowInfo extends StatelessWidget {
                   height: 1.14,
                   letterSpacing: 0.50,
                 ),
-              Expanded(
-                child: TextWidget(
-                  text: value,
-                  fontSize: 14,
-                  color: color2,
-                  fontWeight: FontWeight.w400,
-                  height: 1.14,
-                  letterSpacing: 0.50,
-                  maxLines: 10,
+              if (value != null)
+                Expanded(
+                  child: TextWidget(
+                    text: value!,
+                    fontSize: 14,
+                    color: color2,
+                    fontWeight: FontWeight.w400,
+                    height: 1.14,
+                    letterSpacing: 0.50,
+                    maxLines: 10,
+                  ),
                 ),
-              ),
             ],
           ),
         ),

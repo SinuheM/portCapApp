@@ -4,96 +4,94 @@
 
 import 'dart:convert';
 
-PolygonInfo polygonInfoFromJson(String str) =>
-    PolygonInfo.fromJson(json.decode(str));
+List<PolygonInfo> polygonInfoFromJson(String str) => List<PolygonInfo>.from(
+    json.decode(str).map((x) => PolygonInfo.fromJson(x)));
 
-String polygonInfoToJson(PolygonInfo data) => json.encode(data.toJson());
+String polygonInfoToJson(List<PolygonInfo> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class PolygonInfo {
   String? capacidadPortante;
-  List<String>? cohesinYAnguloDeFriccin;
+  List<String>? cimentacinSuperficialPropuesta;
+  CohesinYAnguloDeFriccin? cohesinYAnguloDeFriccin;
   String? contenidoDeHumedad;
+  String? id;
   List<String>? limites;
-  String? pesoEspecficoNatural;
+  double? pesoEspecficoNatural;
   String? tipoDeSueloAashto;
   String? tipoDeSueloSucs;
   String? zona;
-  String? id;
-  List<String>? cimentacionSuperficialPropuesta;
 
   PolygonInfo({
     this.capacidadPortante,
+    this.cimentacinSuperficialPropuesta,
     this.cohesinYAnguloDeFriccin,
     this.contenidoDeHumedad,
+    this.id,
     this.limites,
     this.pesoEspecficoNatural,
     this.tipoDeSueloAashto,
     this.tipoDeSueloSucs,
     this.zona,
-    this.id,
-    this.cimentacionSuperficialPropuesta
   });
-
-  PolygonInfo copyWith({
-    String? capacidadPortante,
-    List<String>? cohesinYAnguloDeFriccin,
-    String? contenidoDeHumedad,
-    List<String>? limites,
-    String? pesoEspecficoNatural,
-    String? tipoDeSueloAashto,
-    String? tipoDeSueloSucs,
-    String? zona,
-    String? id,
-    List<String>? cimentacionSuperficialPropuesta
-  }) =>
-      PolygonInfo(
-        capacidadPortante: capacidadPortante ?? this.capacidadPortante,
-        cohesinYAnguloDeFriccin:
-            cohesinYAnguloDeFriccin ?? this.cohesinYAnguloDeFriccin,
-        contenidoDeHumedad: contenidoDeHumedad ?? this.contenidoDeHumedad,
-        limites: limites ?? this.limites,
-        pesoEspecficoNatural: pesoEspecficoNatural ?? this.pesoEspecficoNatural,
-        tipoDeSueloAashto: tipoDeSueloAashto ?? this.tipoDeSueloAashto,
-        tipoDeSueloSucs: tipoDeSueloSucs ?? this.tipoDeSueloSucs,
-        zona: zona ?? this.zona,
-        id: id ?? this.id,
-        cimentacionSuperficialPropuesta: cimentacionSuperficialPropuesta ?? this.cimentacionSuperficialPropuesta
-      );
 
   factory PolygonInfo.fromJson(Map<String, dynamic> json) => PolygonInfo(
         capacidadPortante: json["Capacidad portante"],
+        cimentacinSuperficialPropuesta:
+            json["Cimentación superficial propuesta"] == null
+                ? []
+                : List<String>.from(
+                    json["Cimentación superficial propuesta"]!.map((x) => x)),
         cohesinYAnguloDeFriccin: json["Cohesión y angulo de fricción"] == null
-            ? []
-            : List<String>.from(
-                json["Cohesión y angulo de fricción"]!.map((x) => x)),
+            ? null
+            : CohesinYAnguloDeFriccin.fromJson(
+                json["Cohesión y angulo de fricción"]),
         contenidoDeHumedad: json["Contenido de humedad"],
+        id: json["ID"],
         limites: json["Limites"] == null
             ? []
             : List<String>.from(json["Limites"]!.map((x) => x)),
-        pesoEspecficoNatural: json["Peso específico natural"],
+        pesoEspecficoNatural: json["Peso específico natural"]?.toDouble(),
         tipoDeSueloAashto: json["Tipo de suelo Aashto"],
         tipoDeSueloSucs: json["Tipo de suelo Sucs"],
         zona: json["Zona"],
-        id: json["ID"],
-        cimentacionSuperficialPropuesta: json["Cimentación superficial propuesta"] == null
-            ? []
-            : List<String>.from(json["Cimentación superficial propuesta"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "Capacidad portante": capacidadPortante,
-        "Cohesión y angulo de fricción": cohesinYAnguloDeFriccin == null
+        "Cimentación superficial propuesta": cimentacinSuperficialPropuesta ==
+                null
             ? []
-            : List<dynamic>.from(cohesinYAnguloDeFriccin!.map((x) => x)),
+            : List<dynamic>.from(cimentacinSuperficialPropuesta!.map((x) => x)),
+        "Cohesión y angulo de fricción": cohesinYAnguloDeFriccin?.toJson(),
         "Contenido de humedad": contenidoDeHumedad,
+        "ID": id,
         "Limites":
             limites == null ? [] : List<dynamic>.from(limites!.map((x) => x)),
         "Peso específico natural": pesoEspecficoNatural,
         "Tipo de suelo Aashto": tipoDeSueloAashto,
         "Tipo de suelo Sucs": tipoDeSueloSucs,
         "Zona": zona,
-        "ID": id,
-        "Cimentación superficial propuesta": 
-          cimentacionSuperficialPropuesta == null ? [] : List<dynamic>.from(cimentacionSuperficialPropuesta!.map((x) => x)),
+      };
+}
+
+class CohesinYAnguloDeFriccin {
+  double? c;
+  double? q;
+
+  CohesinYAnguloDeFriccin({
+    this.c,
+    this.q,
+  });
+
+  factory CohesinYAnguloDeFriccin.fromJson(Map<String, dynamic> json) =>
+      CohesinYAnguloDeFriccin(
+        c: json["c"]?.toDouble(),
+        q: json["q"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "c": c,
+        "q": q,
       };
 }

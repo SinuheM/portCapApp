@@ -9,10 +9,14 @@ class MapProvider {
   MapProvider(this._apiProvider);
 
   Future<Response> getPolygons(bool forceRefresh) async {
-    return _apiProvider.get('/geojson.json',forceRefresh: forceRefresh);
+    return _apiProvider.get('/geojson.json', forceRefresh: forceRefresh);
   }
 
   Future<Response> getInformation(bool forceRefresh) async {
-    return _apiProvider.get('/cap_data.json',forceRefresh: forceRefresh);
+    return _apiProvider.get('/cap_data_test.json', forceRefresh: forceRefresh);
+  }
+
+  Future<Response> getConfig(bool forceRefresh) async {
+    return _apiProvider.get('/config.json', forceRefresh: forceRefresh);
   }
 }

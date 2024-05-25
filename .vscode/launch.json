@@ -7,79 +7,9 @@
         {
             "name": "portcap",
             "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "portcap (profile mode)",
-            "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "debug",
+            "program": "lib/main.dart"
         },
-        {
-            "name": "portcap (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "core",
-            "cwd": "core",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "core (profile mode)",
-            "cwd": "core",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "core (release mode)",
-            "cwd": "core",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "domain",
-            "cwd": "domain",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "domain (profile mode)",
-            "cwd": "domain",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "domain (release mode)",
-            "cwd": "domain",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "presentation",
-            "cwd": "presentation",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "presentation (profile mode)",
-            "cwd": "presentation",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "presentation (release mode)",
-            "cwd": "presentation",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
     ]
 }

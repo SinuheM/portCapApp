@@ -67,7 +67,7 @@ class _ConfigModalState extends State<ConfigModal>
                   builder: (context, state) {
                     final DateFormat dateFormat =
                         DateFormat('dd/MM/yyyy hh:mm:ss');
-                    final isInfoLoading = state.isInfoLoading;
+                    final isInfoLoading = state.dataState == DataState.loading;
                     if (isInfoLoading) {
                       _animationController.repeat();
                     } else {

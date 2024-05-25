@@ -33,6 +33,7 @@ class _MainPageState extends State<MainPage> {
   Geodesy geodesy = Geodesy();
   PolygonInfo? _polygonInfo;
   MyPolygon? selectedPolygon;
+  bool isDraggableInfoOpened = false;
 
   @override
   void initState() {
@@ -71,7 +72,8 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  searchPointInPolygons(List<MyPolygon> polygons, List<PolygonInfo> polygonInformation, LatLng point) {
+  searchPointInPolygons(List<MyPolygon> polygons,
+      List<PolygonInfo> polygonInformation, LatLng point) {
     for (var element in polygons) {
       bool isGeoPointInPolygon =
           geodesy.isGeoPointInPolygon(point, element.points);
@@ -81,14 +83,14 @@ class _MainPageState extends State<MainPage> {
             polygonInformation.firstWhereOrNull((e) => e.id == element.key);
         setState(() {
           _polygonInfo = polygonInfo;
+          isDraggableInfoOpened = true;
           selectedPolygon = MyPolygon(
-            color: grey.withOpacity(0.25),
-            points: element.points,
-            borderColor: Colors.blue,
-            isFilled: true,
-            borderStrokeWidth: 3,
-            key: element.key
-          );
+              color: grey.withOpacity(0.25),
+              points: element.points,
+              borderColor: Colors.blue,
+              isFilled: true,
+              borderStrokeWidth: 3,
+              key: element.key);
         });
       }
     }
@@ -109,11 +111,11 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: BlocListener<MapBloc, MapState>(
         listener: (context, state) {
-          if (state.hasError) {
+          if (state.dataState == DataState.error) {
             messageBloc.add(
                 ShowErrorMessageEvent((state.exception as dynamic).message));
           }
-          if (state.isInfoRefreshed) {
+          if (state.dataState == DataState.refreshed) {
             mapBloc.add(GetDateLastUpdateEvent());
             messageBloc.add(const ShowSuccessMessageEvent(
                 'Información actualizada exitosamente.'));
@@ -168,8 +170,19 @@ class _MainPageState extends State<MainPage> {
                       icon: Icons.my_location,
                     ),
                   ),
-                  if (_polygonInfo != null)
-                    DraggableInfo(polygonInfo: _polygonInfo!, key: Key('${_polygonInfo?.id}'),)
+                  if (isDraggableInfoOpened && _polygonInfo != null)
+                    DraggableInfo(
+                      polygonInfo: _polygonInfo!,
+                      key: Key(
+                        '${_polygonInfo?.id}',
+                      ),
+                      onClose: () {
+                        setState(() {
+                          isDraggableInfoOpened = false;
+                          _polygonInfo = null;
+                        });
+                      },
+                    )
                 ],
               ),
             );

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:domain/domain.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_map/flutter_map.dart';
 // ignore: implementation_imports
 import 'package:domain/src/map/models/my_polygon.dart';
 
@@ -19,6 +18,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     on<GetPolygonsEvent>(_onGetPolygons);
     on<GetPolygonsInformationEvent>(_onGetPolygonsInformation);
+    on<GetConfigEvent>(_onGetConfig);
   }
 
   void _onGetDateLastUpdate(
@@ -35,44 +35,42 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   void _onGetPolygonsInformation(
       GetPolygonsInformationEvent event, Emitter<MapState> emit) async {
-    emit(state.copyWith(
-      hasError: false,
-      isInfoRefreshed: false,
-      isInfoLoading: false,
-    ));
-
+    emit(state.copyWith(dataState: DataState.loading));
     await emit.forEach<List<PolygonInfo>>(
         _mapRepository.getInformation(forceRefresh: event.forceRefresh),
         onData: (polygonsInformation) {
-      return state.copyWith(
-          polygonsInformation: polygonsInformation,
-          isInfoRefreshed: event.forceRefresh ? true : false,
-          isInfoLoading: false);
+      return state.copyWith(polygonsInformation: polygonsInformation);
     }, onError: <Exception>(exception, __) {
-      return state.copyWith(
-          hasError: true, exception: exception, isInfoLoading: false);
+      return state.copyWith(dataState: DataState.error, exception: exception);
     });
+    add(GetConfigEvent(forceRefresh: event.forceRefresh));
+  }
+
+  void _onGetConfig(GetConfigEvent event, Emitter<MapState> emit) async {
+    await emit.forEach<Config>(
+        _mapRepository.getConfig(forceRefresh: event.forceRefresh),
+        onData: (config) {
+      return state.copyWith(config: config);
+    }, onError: <Exception>(exception, __) {
+      return state.copyWith(dataState: DataState.error, exception: exception);
+    });
+    emit(state.copyWith(
+        dataState:
+            event.forceRefresh ? DataState.refreshed : DataState.loaded));
   }
 
   void _onGetPolygons(GetPolygonsEvent event, Emitter<MapState> emit) async {
-    emit(state.copyWith(
-      hasError: false,
-      isInfoRefreshed: false,
-      isInfoLoading: true,
-    ));
+    emit(state.copyWith(dataState: DataState.loading));
 
     await emit.forEach<GeoJsonParser>(
         _mapRepository.getPolygons(forceRefresh: event.forceRefresh),
         onData: (geoJsonParser) {
       return state.copyWith(
-          polygons: geoJsonParser.polygons,
-          isInfoRefreshed: event.forceRefresh ? true : false,
-          isInfoLoading: false);
+        polygons: geoJsonParser.polygons,
+      );
     }, onError: <Exception>(exception, __) {
       return state.copyWith(
-        hasError: true,
         exception: exception,
-        isInfoLoading: false,
       );
     });
     if (!event.forceRefresh) {

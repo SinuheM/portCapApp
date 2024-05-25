@@ -18,6 +18,7 @@ class CustomButton extends StatelessWidget {
   final Color borderColor;
   final double borderRadius;
   final IconData icon;
+  final FontWeight fontWeight;
   const CustomButton(
       {Key? key,
       required this.text,
@@ -33,6 +34,7 @@ class CustomButton extends StatelessWidget {
       this.isTextBold = false,
       this.borderColor = white,
       this.borderRadius = 10,
+      this.fontWeight = FontWeight.w400,
       this.icon = Icons.search})
       : super(key: key);
 
@@ -74,7 +76,7 @@ class CustomButton extends StatelessWidget {
               child: TextWidget(
                 text: text,
                 color: textColor,
-                fontWeight: isTextBold ? FontWeight.bold : FontWeight.normal,
+                fontWeight: fontWeight,
                 fontSize: fontSize,
                 textAlign: TextAlign.center,
               ),

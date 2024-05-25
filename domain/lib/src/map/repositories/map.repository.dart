@@ -46,4 +46,16 @@ class MapRepository {
         .map((Response response) => _mapMapping.parsePolygonInfo(response.data))
         .handleError(_errorMapping.toThrow);
   }
+
+  Stream<Config> getConfig({bool forceRefresh = false}) {
+    return Stream.fromFuture(_mapProvider.getConfig(forceRefresh))
+        .doOnData((response) {
+          final cachedResponse = response.headers.value(keyCache);
+          if (cachedResponse == null) {
+            _dateProvider.saveConfigDate(DateTime.now());
+          }
+        })
+        .map((Response response) => _mapMapping.parseConfig(response.data))
+        .handleError(_errorMapping.toThrow);
+  }
 }
