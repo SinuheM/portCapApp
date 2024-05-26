@@ -61,13 +61,13 @@ class InfoCard extends StatelessWidget {
         const SizedBox(height: 16),
         RowInfo(
           title: 'Peso específico natural',
-          value: '${polygonInfo.pesoEspecficoNatural}',
+          value: '${polygonInfo.pesoEspecficoNatural} gr/cm3',
         ),
         const SizedBox(height: 16),
         RowInfo(
             title: 'Cohesión y ángulo de fricción',
-            value: 'c ${polygonInfo.cohesinYAnguloDeFriccin?.c}\n'
-                'φ ${polygonInfo.cohesinYAnguloDeFriccin?.q}'),
+            value: 'c - ${polygonInfo.cohesinYAnguloDeFriccin?.c} kg/cm2 \n'
+                'φ - ${polygonInfo.cohesinYAnguloDeFriccin?.q} º'),
         const SizedBox(height: 16),
         RowInfo(
             title: 'Capacidad portante',
