@@ -27,6 +27,7 @@ class _CalculatorCardState extends State<CalculatorCard> {
   final FormGroup form = FormGroup({
     'cohesion': FormControl<String>(validators: [Validators.required]),
     'frictionAngle': FormControl<String>(validators: [Validators.required]),
+    'weight': FormControl<String>(),
     'df': FormControl<String>(validators: [Validators.required]),
     'B': FormControl<String>(validators: [Validators.required]),
     'L': FormControl<String>(validators: [Validators.required]),
@@ -46,7 +47,7 @@ class _CalculatorCardState extends State<CalculatorCard> {
     double b36 = double.parse(data['B']);
     double b37 = double.parse(data['L']);
     //Peso especifico del suelo
-    double b38 = 2.039;
+    double b38 = double.parse(data['weight']);
     // =EXP(PI()*TAN(B33*PI()/180))*TAN((45+B33/2)*PI()/180)^2
     double b40 =
         exp(pi * tan(b33 * pi / 180)) * pow(tan((45 + b33 / 2) * pi / 180), 2);
@@ -92,6 +93,8 @@ class _CalculatorCardState extends State<CalculatorCard> {
         ? {
             'cohesion':
                 widget.polygonInfo.cohesinYAnguloDeFriccin?.c.toString(),
+            'weight': 
+              widget.polygonInfo.pesoEspecficoNatural.toString(),
             'frictionAngle':
                 widget.polygonInfo.cohesinYAnguloDeFriccin?.q.toString()
           }
