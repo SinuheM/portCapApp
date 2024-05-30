@@ -88,6 +88,14 @@ class _ResultCardState extends State<ResultCard> {
             suffixLabel: 'm',
             formControlName: 'L',
           ),
+          const SizedBox(height: 18.0),
+          const RowInfo(title: 'Carga admisible (qadm)'),
+          const SizedBox(height: 2),
+          const CalculatorTextfield(
+            readOnly: true,
+            suffixLabel: 'kg/cm2',
+            formControlName: 'loadAdmissible',
+          ),
           const SizedBox(height: 33),
           CustomButton(
             text: 'Volver',
