@@ -44,7 +44,7 @@ class _ResultCardState extends State<ResultCard> {
     } else if (value >= 1.2 && value < 1.5) {
       return 'Zapata conectada';
     } else {
-      return 'Zapatas aisladas';
+      return 'Zapata aislada';
     }
   }
 
