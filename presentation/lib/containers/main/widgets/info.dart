@@ -61,7 +61,7 @@ class InfoCard extends StatelessWidget {
         const SizedBox(height: 16),
         RowInfo(
           title: 'Peso específico natural',
-          value: '${polygonInfo.pesoEspecficoNatural}',
+          value: '${polygonInfo.pesoEspecficoNatural} tn/m3',
         ),
         const SizedBox(height: 16),
         RowInfo(

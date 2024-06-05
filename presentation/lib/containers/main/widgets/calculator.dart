@@ -31,6 +31,7 @@ class _CalculatorCardState extends State<CalculatorCard> {
     'B': FormControl<String>(validators: [Validators.required]),
     'L': FormControl<String>(validators: [Validators.required]),
     'loadAdmissible': FormControl<String>(disabled: true, validators: []),
+    'y': FormControl<String>(validators: [Validators.required]),
   });
 
   calculateLoadAdmissible(Map<String, dynamic> data) {
@@ -46,7 +47,7 @@ class _CalculatorCardState extends State<CalculatorCard> {
     double b36 = double.parse(data['B']);
     double b37 = double.parse(data['L']);
     //Peso especifico del suelo
-    double b38 = 2.039;
+    double b38 = double.parse(data['y']);
     // =EXP(PI()*TAN(B33*PI()/180))*TAN((45+B33/2)*PI()/180)^2
     double b40 =
         exp(pi * tan(b33 * pi / 180)) * pow(tan((45 + b33 / 2) * pi / 180), 2);
@@ -93,7 +94,8 @@ class _CalculatorCardState extends State<CalculatorCard> {
             'cohesion':
                 widget.polygonInfo.cohesinYAnguloDeFriccin?.c.toString(),
             'frictionAngle':
-                widget.polygonInfo.cohesinYAnguloDeFriccin?.q.toString()
+                widget.polygonInfo.cohesinYAnguloDeFriccin?.q.toString(),
+            'y': widget.polygonInfo.pesoEspecficoNatural.toString(),
           }
         : widget.currentValues);
   }
@@ -121,6 +123,15 @@ class _CalculatorCardState extends State<CalculatorCard> {
             prefixLabel: 'φ',
             suffixLabel: 'º',
             formControlName: 'frictionAngle',
+            onChanged: (val) {
+              calculateLoadAdmissible(form.value);
+            },
+          ),
+          const SizedBox(height: 2),
+          CalculatorTextfield(
+            prefixLabel: 'y',
+            suffixLabel: 'tn/m3',
+            formControlName: 'y',
             onChanged: (val) {
               calculateLoadAdmissible(form.value);
             },
