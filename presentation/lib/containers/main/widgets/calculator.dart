@@ -27,6 +27,7 @@ class _CalculatorCardState extends State<CalculatorCard> {
   final FormGroup form = FormGroup({
     'cohesion': FormControl<String>(validators: [Validators.required]),
     'frictionAngle': FormControl<String>(validators: [Validators.required]),
+    'weight': FormControl<String>(),
     'df': FormControl<String>(validators: [Validators.required]),
     'B': FormControl<String>(validators: [Validators.required]),
     'L': FormControl<String>(validators: [Validators.required]),
@@ -93,6 +94,8 @@ class _CalculatorCardState extends State<CalculatorCard> {
         ? {
             'cohesion':
                 widget.polygonInfo.cohesinYAnguloDeFriccin?.c.toString(),
+            'weight': 
+              widget.polygonInfo.pesoEspecficoNatural.toString(),
             'frictionAngle':
                 widget.polygonInfo.cohesinYAnguloDeFriccin?.q.toString(),
             'y': widget.polygonInfo.pesoEspecficoNatural.toString(),

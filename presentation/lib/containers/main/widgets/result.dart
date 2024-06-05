@@ -44,7 +44,20 @@ class _ResultCardState extends State<ResultCard> {
     } else if (value >= 1.2 && value < 1.5) {
       return 'Zapata conectada';
     } else {
-      return 'Zapatas aisladas';
+      return 'Zapata aislada';
+    }
+  }
+
+  getImage() {
+    final value = double.parse(form.control('loadAdmissible').value ?? 0.0);
+    if (value < 0.8) {
+      return 'assets/images/p_cimentacion.png';
+    } else if (value >= 0.8 && value < 1.2) {
+      return 'assets/images/z_combinada.jpg';
+    } else if (value >= 1.2 && value < 1.5) {
+      return 'assets/images/z_conectada.jpg';
+    } else {
+      return 'assets/images/z_aislada.png';
     }
   }
 
@@ -58,10 +71,9 @@ class _ResultCardState extends State<ResultCard> {
           RowInfo(title: getResult()),
           Container(
             height: 160,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/dibujo_app-removebg-preview.png'), // ruta de la imagen
+                image: AssetImage(getImage()), // ruta de la imagen 
                 fit: BoxFit.contain, // ajustar la imagen al contenedor
               ),
             ),
@@ -87,6 +99,14 @@ class _ResultCardState extends State<ResultCard> {
             prefixLabel: 'L',
             suffixLabel: 'm',
             formControlName: 'L',
+          ),
+          const SizedBox(height: 18.0),
+          const RowInfo(title: 'Carga admisible (qadm)'),
+          const SizedBox(height: 2),
+          const CalculatorTextfield(
+            readOnly: true,
+            suffixLabel: 'kg/cm2',
+            formControlName: 'loadAdmissible',
           ),
           const SizedBox(height: 33),
           CustomButton(
